@@ -1,0 +1,279 @@
+html, body, #root { height: 100%; }
+body { background: #f3f5fb; }
+
+.app-grid {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "sidebar topbar" "sidebar main";
+}
+
+.sidebar { 
+  grid-area: sidebar; 
+  background: var(--sidebar-bg); 
+  color: var(--sidebar-text); 
+  overflow-y: auto; 
+  
+}
+.topbar { grid-area: topbar; background: #fff; }
+.main { grid-area: main; padding: 1rem; }
+
+/* Sidebar */
+.sidebar .brand {
+  padding: 1.25rem 1rem;
+  display: flex; align-items:center; gap: .5rem;
+  color: #fff; text-decoration:none;
+}
+.sidebar .brand .dot { width: 10px; height: 10px; border-radius:50%; background: var(--dk-purple); }
+
+.sidebar .menu { padding: .5rem; }
+.sidebar .menu .section-title {
+  font-size: .75rem; letter-spacing:.08em; text-transform:uppercase; color:#7c819b; padding: .75rem 1rem;
+}
+.sidebar .nav-link {
+  color: var(--sidebar-text);
+  border-radius: .75rem;
+  padding: .6rem .9rem;
+  display:flex; align-items:center; gap:.6rem;
+}
+.sidebar .nav-link:hover { background: rgba(255,255,255,.06); color:#fff; }
+.sidebar .nav-link.active { background: rgba(111,66,193,.2); color:#fff; }
+
+/* Cards */
+.card {
+  border: 0;
+  border-radius: var(--card-radius);
+  box-shadow: 0 8px 20px rgba(0,0,0,.05);
+}
+.card .card-title { font-weight: 700; }
+
+.badge-soft { background: rgba(111,66,193,.12); color: var(--dk-purple); }
+
+/* Responsive */
+@media (max-width: 992px) {
+  .app-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "topbar" "main";
+  }
+  .sidebar { 
+    position:fixed; top:0; left:0; width:260px; z-index:1050;
+    box-shadow: 2px 0 12px rgba(0,0,0,.1);
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    
+  }
+  .sidebar.open { transform: translateX(0)!important; }
+}
+
+.close-btn {
+  font-size: 1.5rem; line-height:1; color:#fff;
+  background: transparent; border:0;
+  position: absolute; top:1rem; right:1rem;
+}
+.btn-link { color: var(--dk-purple); }
+
+/* Business Card Styles */
+.business-card {
+  /* Common styles for both preview and print */
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Preview mode - visible on screen */
+.business-card.preview-mode {
+  display: block;
+}
+
+
+.card-content {
+  display: flex;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.logo {
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 5px;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.company-subtitle {
+  font-size: 16px;
+}
+
+.location {
+  font-size: 16px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.address-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.product-info {
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* Print Rules */
+@media print {
+  /* Hide everything except the business card */
+  body * {
+    visibility: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Show only the print-mode business cards */
+  .business-card.print-mode,
+  .business-card.print-mode * {
+    visibility: visible;
+  }
+  
+  .business-card.print-mode {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0 !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+    page-break-after: always;
+    break-after: page;
+  }
+  
+  /* Ensure proper sizing for print */
+  .business-card.print-mode .card-content {
+    transform: scale(1.2);
+    transform-origin: top left;
+    width: 83.333%; /* 100% / 1.2 */
+  }
+  
+  /* Hide all other elements */
+  .no-print,
+  .business-card.preview-mode,
+  .modal,
+  .btn-close,
+  .modal-header,
+  .modal-footer {
+    display: none !important;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .business-card {
+    max-width: 768px;
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .card-content {
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .brand-name {
+    font-size: 20px;
+  }
+  
+  .company-info,
+  .address-block {
+    font-size: 14px;
+  }
+  
+  .company-name {
+    font-size: 16px;
+  }
+  
+  .product-info {
+    font-size: 14px;
+  }
+  
+  @media print {
+    .business-card.print-mode {
+      padding: 10px !important;
+    }
+    
+    .business-card.print-mode .card-content {
+      transform: scale(1.1);
+      width: 90.9%; /* 100% / 1.1 */
+    }
+  }
+}
+
+.react-select__menu {
+  background-color: #fff !important;
+}
+
+
+

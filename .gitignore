@@ -1,0 +1,4 @@
+.vercel
+*.zip
+dist/
+node_modules/
